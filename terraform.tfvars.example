@@ -1,0 +1,34 @@
+# ─────────────────────────────────────────────
+# terraform.tfvars.example
+#
+# Copy this file to terraform.tfvars and fill
+# in your values. NEVER commit terraform.tfvars
+# to Git — it contains sensitive credentials.
+# ─────────────────────────────────────────────
+
+aws_region   = "us-east-1"
+project_name = "blueprint"
+environment  = "dev"
+owner        = "thomas"
+
+# Networking
+vpc_cidr             = "10.0.0.0/16"
+public_subnet_cidrs  = ["10.0.1.0/24", "10.0.2.0/24"]
+private_subnet_cidrs = ["10.0.3.0/24", "10.0.4.0/24"]
+availability_zones   = ["us-east-1a", "us-east-1b"]
+
+# EC2
+instance_type    = "t2.micro"
+key_pair_name    = "your-key-pair-name"
+allowed_ssh_cidr = "YOUR_IP_ADDRESS/32" # Replace with your actual IP
+
+# RDS
+db_name              = "blueprintdb"
+db_username          = "admin"
+db_password          = "ChangeMe123!" # Use a strong password
+db_instance_class    = "db.t3.micro"
+db_allocated_storage = 20
+
+# S3
+enable_versioning    = true
+force_destroy_bucket = false
