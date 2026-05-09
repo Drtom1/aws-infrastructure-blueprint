@@ -1,0 +1,56 @@
+# ─────────────────────────────────────────────
+# Terraform / OpenTofu
+# ─────────────────────────────────────────────
+
+# Local .terraform directory (downloaded providers/modules)
+**/.terraform/*
+
+# Terraform lock file (keep this — it locks provider versions)
+# .terraform.lock.hcl  <-- intentionally NOT ignored
+
+# State files — never commit these
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+
+# Plan output files
+tfplan
+*.tfplan
+
+# Variable files with secrets — NEVER commit
+*.tfvars
+!terraform.tfvars.example   # Keep the example safe to commit
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Override files (local overrides, not for version control)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# ─────────────────────────────────────────────
+# AWS & Credentials
+# ─────────────────────────────────────────────
+.aws/
+*.pem
+*.key
+*.crt
+
+# ─────────────────────────────────────────────
+# OS & Editor
+# ─────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ─────────────────────────────────────────────
+# Scripts
+# ─────────────────────────────────────────────
+*.log
