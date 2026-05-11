@@ -107,4 +107,4 @@ All resources use free-tier eligible sizes (`t2.micro`, `db.t3.micro`).
 ## Author
 
 Thomas — Cloud Engineering Portfolio  
-[GitHub](https://github.com/YOUR_USERNAME) · [LinkedIn](https://linkedin.com/in/YOUR_PROFILE)
+[GitHub](https://github.com/Drtom1) · [LinkedIn](https://linkedin.com/in/thomasogbonna)
