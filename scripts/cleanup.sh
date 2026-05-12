@@ -1,10 +1,10 @@
 #!/bin/bash
-# ─────────────────────────────────────────────
+
 # cleanup.sh
 # Safely destroys all resources and confirms
 # nothing is left running that could incur cost
 # Usage: ./scripts/cleanup.sh
-# ─────────────────────────────────────────────
+
 
 set -euo pipefail
 
@@ -34,11 +34,11 @@ echo ""
 read -rp "Type 'confirm' to proceed: " confirm
 [ "$confirm" = "confirm" ] || error "Cleanup cancelled."
 
-# ── Destroy via Terraform first ───────────────
+# Destroy via Terraform first
 info "Running tofu destroy..."
 tofu destroy -auto-approve
 
-# ── Verify no EC2 instances remain ────────────
+# Verify no EC2 instances remain
 info "Verifying EC2 instances are terminated..."
 INSTANCES=$(aws ec2 describe-instances \
   --region "$REGION" \
@@ -54,7 +54,7 @@ else
   success "No EC2 instances remaining."
 fi
 
-# ── Verify no RDS instances remain ────────────
+# Verify no RDS instances remain
 info "Verifying RDS instances are deleted..."
 DBS=$(aws rds describe-db-instances \
   --region "$REGION" \
@@ -71,3 +71,6 @@ fi
 echo ""
 success "Cleanup complete. No billable resources should remain."
 info "Check your AWS Billing dashboard to confirm: https://console.aws.amazon.com/billing"
+
+
+
