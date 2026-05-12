@@ -1,26 +1,24 @@
 #!/bin/bash
-# ─────────────────────────────────────────────
 # deploy.sh
 # Automates the full deployment workflow
 # Usage: ./scripts/deploy.sh [plan|apply|destroy]
-# ─────────────────────────────────────────────
 
 set -euo pipefail
 
-# ── Colours ───────────────────────────────────
+# Colours
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Colour
 
-# ── Helpers ───────────────────────────────────
+# Helpers
 info()    { echo -e "${BLUE}[INFO]${NC}    $1"; }
 success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
 warn()    { echo -e "${YELLOW}[WARN]${NC}    $1"; }
 error()   { echo -e "${RED}[ERROR]${NC}   $1"; exit 1; }
 
-# ── Check Prerequisites ───────────────────────
+# Check Prerequisites
 check_prerequisites() {
   info "Checking prerequisites..."
 
@@ -36,21 +34,21 @@ check_prerequisites() {
   success "All prerequisites met."
 }
 
-# ── Init ──────────────────────────────────────
+#  Init
 run_init() {
   info "Initialising Terraform..."
   tofu init -upgrade
   success "Initialisation complete."
 }
 
-# ── Plan ──────────────────────────────────────
+# Plan
 run_plan() {
   info "Running Terraform plan..."
   tofu plan -out=tfplan
   success "Plan complete. Review the output above before applying."
 }
 
-# ── Apply ─────────────────────────────────────
+# Apply
 run_apply() {
   if [ ! -f "tfplan" ]; then
     warn "No saved plan found. Running plan first..."
@@ -71,7 +69,7 @@ run_apply() {
   tofu output
 }
 
-# ── Destroy ───────────────────────────────────
+#  Destroy
 run_destroy() {
   warn "WARNING: This will DESTROY all infrastructure in your AWS account."
   warn "This action is irreversible."
@@ -83,7 +81,7 @@ run_destroy() {
   success "All resources destroyed."
 }
 
-# ── Main ──────────────────────────────────────
+# Main
 main() {
   local command="${1:-help}"
 
