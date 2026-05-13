@@ -1,11 +1,10 @@
-# ─────────────────────────────────────────────
+
 # Module: S3
 # Creates a secure S3 bucket with:
 #   - Versioning
 #   - Server-side encryption
 #   - Public access fully blocked
 #   - Lifecycle rules to manage costs
-# ─────────────────────────────────────────────
 
 resource "aws_s3_bucket" "main" {
   bucket        = "${var.project_name}-${var.environment}-storage-${random_id.bucket_suffix.hex}"
@@ -21,7 +20,7 @@ resource "random_id" "bucket_suffix" {
   byte_length = 4
 }
 
-# ── Block ALL Public Access ───────────────────
+# Block ALL Public Access
 resource "aws_s3_bucket_public_access_block" "main" {
   bucket = aws_s3_bucket.main.id
 
@@ -31,7 +30,7 @@ resource "aws_s3_bucket_public_access_block" "main" {
   restrict_public_buckets = true
 }
 
-# ── Server-Side Encryption ────────────────────
+# Server-Side Encryption
 resource "aws_s3_bucket_server_side_encryption_configuration" "main" {
   bucket = aws_s3_bucket.main.id
 
@@ -42,7 +41,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "main" {
   }
 }
 
-# ── Versioning ────────────────────────────────
+# Versioning
 resource "aws_s3_bucket_versioning" "main" {
   bucket = aws_s3_bucket.main.id
 
@@ -51,7 +50,7 @@ resource "aws_s3_bucket_versioning" "main" {
   }
 }
 
-# ── Lifecycle Rules ───────────────────────────
+# Lifecycle Rules
 # Automatically move old versions to cheaper storage
 # and delete very old ones to control costs
 resource "aws_s3_bucket_lifecycle_configuration" "main" {
