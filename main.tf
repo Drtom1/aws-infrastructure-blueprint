@@ -1,9 +1,9 @@
-# ─────────────────────────────────────────────
+#
 # AWS Infrastructure Blueprint
 # Root Module — Orchestrates all child modules
-# ─────────────────────────────────────────────
 
-# ── VPC & Networking ──────────────────────────
+
+# VPC & Networking
 module "vpc" {
   source = "./modules/vpc"
 
@@ -15,7 +15,7 @@ module "vpc" {
   availability_zones   = var.availability_zones
 }
 
-# ── EC2 Compute ───────────────────────────────
+# EC2 Compute
 module "ec2" {
   source = "./modules/ec2"
 
@@ -28,7 +28,7 @@ module "ec2" {
   public_subnet_id = module.vpc.public_subnet_ids[0]
 }
 
-# ── RDS Database ──────────────────────────────
+# RDS Database
 module "rds" {
   source = "./modules/rds"
 
@@ -44,7 +44,7 @@ module "rds" {
   ec2_security_group  = module.ec2.security_group_id
 }
 
-# ── S3 Storage ────────────────────────────────
+# S3 Storage
 module "s3" {
   source = "./modules/s3"
 
