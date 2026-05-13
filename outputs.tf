@@ -1,8 +1,7 @@
-# ─────────────────────────────────────────────
-# Root Outputs
-# ─────────────────────────────────────────────
 
-# ── VPC Outputs ───────────────────────────────
+# Root Outputs
+
+# VPC Outputs
 output "vpc_id" {
   description = "ID of the created VPC"
   value       = module.vpc.vpc_id
@@ -18,7 +17,7 @@ output "private_subnet_ids" {
   value       = module.vpc.private_subnet_ids
 }
 
-# ── EC2 Outputs ───────────────────────────────
+# EC2 Outputs
 output "ec2_instance_id" {
   description = "ID of the EC2 instance"
   value       = module.ec2.instance_id
@@ -34,7 +33,7 @@ output "ec2_public_dns" {
   value       = module.ec2.public_dns
 }
 
-# ── RDS Outputs ───────────────────────────────
+# RDS Outputs
 output "rds_endpoint" {
   description = "RDS instance connection endpoint"
   value       = module.rds.db_endpoint
@@ -45,7 +44,7 @@ output "rds_port" {
   value       = module.rds.db_port
 }
 
-# ── S3 Outputs ────────────────────────────────
+# S3 Outputs
 output "s3_bucket_name" {
   description = "Name of the S3 bucket"
   value       = module.s3.bucket_name
