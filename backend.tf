@@ -1,4 +1,4 @@
-# ─────────────────────────────────────────────
+
 # Remote State Backend
 #
 # IMPORTANT: Before running `tofu init`:
@@ -14,7 +14,7 @@
 #        --versioning-configuration Status=Enabled
 #
 #   3. Replace the bucket name below with yours
-# ─────────────────────────────────────────────
+
 
 terraform {
   backend "s3" {
