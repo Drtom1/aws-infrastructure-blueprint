@@ -5,9 +5,8 @@
 #   - EC2 instance in the public subnet
 #   - IAM role with SSM access (so you can
 #     connect without a key pair if needed)
-# ─────────────────────────────────────────────
 
-# ── Fetch Latest Amazon Linux 2 AMI ──────────
+# Fetch Latest Amazon Linux 2 AMI
 data "aws_ami" "amazon_linux_2" {
   most_recent = true
   owners      = ["amazon"]
@@ -23,7 +22,7 @@ data "aws_ami" "amazon_linux_2" {
   }
 }
 
-# ── Security Group ────────────────────────────
+# Security Group
 resource "aws_security_group" "ec2" {
   name        = "${var.project_name}-${var.environment}-ec2-sg"
   description = "Security group for EC2 instance"
@@ -70,7 +69,7 @@ resource "aws_security_group" "ec2" {
   }
 }
 
-# ── IAM Role for SSM (Session Manager) ───────
+# IAM Role for SSM (Session Manager)
 resource "aws_iam_role" "ec2_ssm" {
   name = "${var.project_name}-${var.environment}-ec2-ssm-role"
 
@@ -102,7 +101,7 @@ resource "aws_iam_instance_profile" "ec2" {
   role = aws_iam_role.ec2_ssm.name
 }
 
-# ── EC2 Instance ──────────────────────────────
+# EC2 Instance
 resource "aws_instance" "main" {
   ami                    = data.aws_ami.amazon_linux_2.id
   instance_type          = var.instance_type
@@ -119,7 +118,7 @@ resource "aws_instance" "main" {
     delete_on_termination = true
   }
 
-  # Bootstrap script — installs common tools on launch
+  # Bootstrap script installs common tools on launch
   user_data = <<-EOF
     #!/bin/bash
     yum update -y
