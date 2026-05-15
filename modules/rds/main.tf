@@ -1,12 +1,12 @@
-# ─────────────────────────────────────────────
+
 # Module: RDS
 # Creates:
 #   - DB subnet group (spans private subnets)
 #   - Security group (only EC2 can connect)
 #   - RDS MySQL instance in private subnets
-# ─────────────────────────────────────────────
 
-# ── DB Subnet Group ───────────────────────────
+
+# DB Subnet Group
 resource "aws_db_subnet_group" "main" {
   name        = "${var.project_name}-${var.environment}-db-subnet-group"
   description = "Subnet group for RDS instance"
@@ -17,7 +17,7 @@ resource "aws_db_subnet_group" "main" {
   }
 }
 
-# ── RDS Security Group ────────────────────────
+# RDS Security Group
 resource "aws_security_group" "rds" {
   name        = "${var.project_name}-${var.environment}-rds-sg"
   description = "Allow MySQL access from EC2 only"
@@ -44,7 +44,7 @@ resource "aws_security_group" "rds" {
   }
 }
 
-# ── RDS Parameter Group ───────────────────────
+# RDS Parameter Group
 resource "aws_db_parameter_group" "main" {
   name        = "${var.project_name}-${var.environment}-db-params"
   family      = "mysql8.0"
@@ -65,7 +65,7 @@ resource "aws_db_parameter_group" "main" {
   }
 }
 
-# ── RDS Instance ──────────────────────────────
+# RDS Instance
 resource "aws_db_instance" "main" {
   identifier = "${var.project_name}-${var.environment}-db"
 
