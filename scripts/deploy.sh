@@ -82,6 +82,7 @@ run_destroy() {
 }
 
 # Main
+
 main() {
   local command="${1:-help}"
 
