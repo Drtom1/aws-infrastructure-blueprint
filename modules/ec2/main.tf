@@ -6,6 +6,13 @@
 #   - IAM role with SSM access (so you can
 #     connect without a key pair if needed)
 
+locals {
+  name_prefix = "${var.project_name}-${var.environment}"
+  common_tags = {
+    Name = "${local.name_prefix}-ec2"
+  }
+}
+
 # Fetch Latest Amazon Linux 2 AMI
 data "aws_ami" "amazon_linux_2" {
   most_recent = true
@@ -24,7 +31,7 @@ data "aws_ami" "amazon_linux_2" {
 
 # Security Group
 resource "aws_security_group" "ec2" {
-  name        = "${var.project_name}-${var.environment}-ec2-sg"
+  name        = "${local.name_prefix}-ec2-sg"
   description = "Security group for EC2 instance"
   vpc_id      = var.vpc_id
 
@@ -37,19 +44,10 @@ resource "aws_security_group" "ec2" {
     cidr_blocks = [var.allowed_ssh_cidr]
   }
 
-  # HTTP access
+  # HTTP and HTTPS access (combined rule)
   ingress {
-    description = "HTTP"
+    description = "Web traffic (HTTP/HTTPS)"
     from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # HTTPS access
-  ingress {
-    description = "HTTPS"
-    from_port   = 443
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
@@ -64,14 +62,12 @@ resource "aws_security_group" "ec2" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name = "${var.project_name}-${var.environment}-ec2-sg"
-  }
+  tags = merge(local.common_tags, { Component = "SecurityGroup" })
 }
 
 # IAM Role for SSM (Session Manager)
 resource "aws_iam_role" "ec2_ssm" {
-  name = "${var.project_name}-${var.environment}-ec2-ssm-role"
+  name = "${local.name_prefix}-ec2-ssm-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -86,9 +82,7 @@ resource "aws_iam_role" "ec2_ssm" {
     ]
   })
 
-  tags = {
-    Name = "${var.project_name}-${var.environment}-ec2-ssm-role"
-  }
+  tags = merge(local.common_tags, { Component = "IAMRole" })
 }
 
 resource "aws_iam_role_policy_attachment" "ssm" {
@@ -97,7 +91,7 @@ resource "aws_iam_role_policy_attachment" "ssm" {
 }
 
 resource "aws_iam_instance_profile" "ec2" {
-  name = "${var.project_name}-${var.environment}-ec2-profile"
+  name = "${local.name_prefix}-ec2-profile"
   role = aws_iam_role.ec2_ssm.name
 }
 
@@ -129,12 +123,12 @@ resource "aws_instance" "main" {
     usermod -aG docker ec2-user
   EOF
 
-  tags = {
-    Name = "${var.project_name}-${var.environment}-ec2"
-  }
+  tags = local.common_tags
 
   lifecycle {
     # Prevent accidental instance replacement when AMI updates
     ignore_changes = [ami]
   }
 }
+#resource "aws_acm_certificate" "ec2" {
+ 
