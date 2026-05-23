@@ -27,3 +27,15 @@ variable "availability_zones" {
   description = "Availability zones to use"
   type        = list(string)
 }
+
+variable "enable_flow_logs" {
+  description = "Enable VPC Flow Logs for network monitoring"
+  type        = bool
+  default     = true
+}
+
+variable "flow_logs_retention_days" {
+  description = "CloudWatch Log Group retention period for VPC Flow Logs"
+  type        = number
+  default     = 30
+}
