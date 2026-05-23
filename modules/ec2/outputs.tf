@@ -22,3 +22,18 @@ output "iam_role_arn" {
   description = "ARN of the EC2 IAM role"
   value       = aws_iam_role.ec2_ssm.arn
 }
+
+output "log_group_name" {
+  description = "CloudWatch Log Group name for EC2 instance"
+  value       = aws_cloudwatch_log_group.ec2.name
+}
+
+output "log_group_arn" {
+  description = "ARN of the CloudWatch Log Group"
+  value       = aws_cloudwatch_log_group.ec2.arn
+}
+
+output "sns_topic_arn" {
+  description = "ARN of SNS topic for CloudWatch alarms"
+  value       = try(aws_sns_topic.alarms[0].arn, null)
+}
