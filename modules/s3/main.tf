@@ -6,12 +6,16 @@
 #   - Public access fully blocked
 #   - Lifecycle rules to manage costs
 
+locals {
+  name_prefix = "${var.project_name}-${var.environment}"
+}
+
 resource "aws_s3_bucket" "main" {
-  bucket        = "${var.project_name}-${var.environment}-storage-${random_id.bucket_suffix.hex}"
+  bucket        = "${local.name_prefix}-storage-${random_id.bucket_suffix.hex}"
   force_destroy = var.force_destroy_bucket
 
   tags = {
-    Name = "${var.project_name}-${var.environment}-storage"
+    Name = "${local.name_prefix}-storage"
   }
 }
 
