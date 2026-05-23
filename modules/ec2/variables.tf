@@ -35,3 +35,39 @@ variable "public_subnet_id" {
   description = "Public subnet ID to launch the instance into"
   type        = string
 }
+
+variable "enable_monitoring" {
+  description = "Enable detailed CloudWatch monitoring"
+  type        = bool
+  default     = true
+}
+
+variable "enable_auto_recovery" {
+  description = "Enable EC2 auto recovery on instance failure"
+  type        = bool
+  default     = true
+}
+
+variable "root_volume_size" {
+  description = "Size of root EBS volume in GB"
+  type        = number
+  default     = 20
+}
+
+variable "enable_ebs_optimization" {
+  description = "Enable EBS optimization for better performance"
+  type        = bool
+  default     = true
+}
+
+variable "cpu_threshold" {
+  description = "CPU utilization threshold for CloudWatch alarm"
+  type        = number
+  default     = 80
+}
+
+variable "alarm_email" {
+  description = "Email address for CloudWatch alarm notifications"
+  type        = string
+  default     = ""
+}
