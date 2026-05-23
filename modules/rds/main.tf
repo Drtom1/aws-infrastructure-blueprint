@@ -5,21 +5,24 @@
 #   - Security group (only EC2 can connect)
 #   - RDS MySQL instance in private subnets
 
+locals {
+  name_prefix = "${var.project_name}-${var.environment}"
+}
 
 # DB Subnet Group
 resource "aws_db_subnet_group" "main" {
-  name        = "${var.project_name}-${var.environment}-db-subnet-group"
+  name        = "${local.name_prefix}-db-subnet-group"
   description = "Subnet group for RDS instance"
   subnet_ids  = var.private_subnet_ids
 
   tags = {
-    Name = "${var.project_name}-${var.environment}-db-subnet-group"
+    Name = "${local.name_prefix}-db-subnet-group"
   }
 }
 
 # RDS Security Group
 resource "aws_security_group" "rds" {
-  name        = "${var.project_name}-${var.environment}-rds-sg"
+  name        = "${local.name_prefix}-rds-sg"
   description = "Allow MySQL access from EC2 only"
   vpc_id      = var.vpc_id
 
@@ -40,13 +43,13 @@ resource "aws_security_group" "rds" {
   }
 
   tags = {
-    Name = "${var.project_name}-${var.environment}-rds-sg"
+    Name = "${local.name_prefix}-rds-sg"
   }
 }
 
 # RDS Parameter Group
 resource "aws_db_parameter_group" "main" {
-  name        = "${var.project_name}-${var.environment}-db-params"
+  name        = "${local.name_prefix}-db-params"
   family      = "mysql8.0"
   description = "Custom parameter group for ${var.project_name}"
 
@@ -61,13 +64,13 @@ resource "aws_db_parameter_group" "main" {
   }
 
   tags = {
-    Name = "${var.project_name}-${var.environment}-db-params"
+    Name = "${local.name_prefix}-db-params"
   }
 }
 
 # RDS Instance
 resource "aws_db_instance" "main" {
-  identifier = "${var.project_name}-${var.environment}-db"
+  identifier = "${local.name_prefix}-db"
 
   # Engine
   engine         = "mysql"
@@ -77,7 +80,7 @@ resource "aws_db_instance" "main" {
   # Storage
   allocated_storage     = var.allocated_storage
   max_allocated_storage = 100 # Autoscaling cap
-  storage_type          = "gp2"
+  storage_type          = "gp3"
   storage_encrypted     = true
 
   # Credentials
@@ -101,6 +104,6 @@ resource "aws_db_instance" "main" {
   maintenance_window      = "Mon:04:00-Mon:05:00"
 
   tags = {
-    Name = "${var.project_name}-${var.environment}-db"
+    Name = "${local.name_prefix}-db"
   }
 }
