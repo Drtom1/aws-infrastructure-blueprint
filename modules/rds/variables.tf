@@ -51,3 +51,39 @@ variable "ec2_security_group" {
   description = "Security group ID of the EC2 instance (allowed to access RDS)"
   type        = string
 }
+
+variable "enable_multi_az" {
+  description = "Enable Multi-AZ deployment for high availability"
+  type        = bool
+  default     = false
+}
+
+variable "enable_enhanced_monitoring" {
+  description = "Enable enhanced RDS monitoring"
+  type        = bool
+  default     = true
+}
+
+variable "enable_performance_insights" {
+  description = "Enable Performance Insights for database analysis"
+  type        = bool
+  default     = true
+}
+
+variable "backup_retention_days" {
+  description = "Number of days to retain automated backups"
+  type        = number
+  default     = 7
+}
+
+variable "db_storage_threshold_gb" {
+  description = "CloudWatch alarm threshold for storage usage in GB"
+  type        = number
+  default     = 50
+}
+
+variable "alarm_email" {
+  description = "Email address for CloudWatch alarm notifications"
+  type        = string
+  default     = ""
+}
